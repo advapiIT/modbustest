@@ -1,0 +1,48 @@
+﻿using Modbus.Net;
+using Modbus.Net.Modbus;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace WpfApp1
+{
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
+
+        private static BaseUtility _utility;
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (_utility == null)
+            {
+                _utility = new ModbusUtility(ModbusType.Tcp, "192.168.1.95:504",1,0);
+            }
+
+            _utility.Connect();
+
+
+            var lampsbyte = await _utility.GetDatasAsync("0X 00800",1);
+
+
+        }
+    }
+}
+
